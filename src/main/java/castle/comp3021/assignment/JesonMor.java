@@ -75,6 +75,11 @@ public class JesonMor extends Game {
     @Override
     public Player getWinner(Player lastPlayer, Piece lastPiece, Move lastMove) {
         // TODO student implementation
+        var centralPlace = getCentralPlace();
+        var source = lastMove.getSource();
+        if (source.equals(centralPlace)) {
+            return lastPlayer;
+        }
         return null;
     }
 
