@@ -41,9 +41,9 @@ public class JesonMor extends Game {
         while (true) {
             // TODO student implementation starts here
             this.currentPlayer = configuration.getPlayers()[numMoves % 2];
-            var availableMoves = getAvailableMoves(currentPlayer);
-            var chosenMove = currentPlayer.nextMove(this, availableMoves);
-            var chosenPiece = getPiece(chosenMove.getSource());
+            Move[] availableMoves = getAvailableMoves(currentPlayer);
+            Move chosenMove = currentPlayer.nextMove(this, availableMoves);
+            Piece chosenPiece = getPiece(chosenMove.getSource());
             this.movePiece(chosenMove);
             this.updateScore(currentPlayer, chosenPiece, chosenMove);
             this.numMoves++;
@@ -77,14 +77,14 @@ public class JesonMor extends Game {
         // TODO student implementation
         if (this.numMoves > configuration.getNumMovesProtection()) {
             // win by leaving central place
-            var centralPlace = getCentralPlace();
-            var source = lastMove.getSource();
+            Place centralPlace = getCentralPlace();
+            Place source = lastMove.getSource();
             if (source.equals(centralPlace)) {
                 return lastPlayer;
             }
             // win by capturing all enemy pieces
-            for (var pieces : this.board) {
-                for (var piece : pieces) {
+            for (Piece[] pieces : this.board) {
+                for (Piece piece : pieces) {
                     if (piece != null && !lastPlayer.equals(piece.getPlayer())) {
                         return null;
                     }
