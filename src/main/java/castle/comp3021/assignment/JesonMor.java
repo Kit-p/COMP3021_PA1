@@ -79,11 +79,13 @@ public class JesonMor extends Game {
             return null;
         }
         if (this.numMoves > configuration.getNumMovesProtection()) {
-            // win by leaving central place
-            Place centralPlace = getCentralPlace();
-            Place source = lastMove.getSource();
-            if (source.equals(centralPlace)) {
-                return lastPlayer;
+            // win by leaving central place as a Knight
+            if (lastPiece.getLabel() == 'K') {
+                Place centralPlace = getCentralPlace();
+                Place source = lastMove.getSource();
+                if (source.equals(centralPlace)) {
+                    return lastPlayer;
+                }
             }
             // win by capturing all enemy pieces
             for (Piece[] pieces : this.board) {
