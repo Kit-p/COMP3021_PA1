@@ -75,6 +75,9 @@ public class JesonMor extends Game {
     @Override
     public Player getWinner(Player lastPlayer, Piece lastPiece, Move lastMove) {
         // TODO student implementation
+        if (lastPlayer == null || lastPiece == null || lastMove == null) {
+            return null;
+        }
         if (this.numMoves > configuration.getNumMovesProtection()) {
             // win by leaving central place
             Place centralPlace = getCentralPlace();
