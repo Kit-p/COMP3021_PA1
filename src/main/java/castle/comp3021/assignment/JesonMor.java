@@ -75,9 +75,21 @@ public class JesonMor extends Game {
     @Override
     public Player getWinner(Player lastPlayer, Piece lastPiece, Move lastMove) {
         // TODO student implementation
-        var centralPlace = getCentralPlace();
-        var source = lastMove.getSource();
-        if (source.equals(centralPlace)) {
+        if (this.numMoves > configuration.getNumMovesProtection()) {
+            // win by leaving central place
+            var centralPlace = getCentralPlace();
+            var source = lastMove.getSource();
+            if (source.equals(centralPlace)) {
+                return lastPlayer;
+            }
+            // win by capturing all enemy pieces
+            for (var pieces : this.board) {
+                for (var piece : pieces) {
+                    if (piece != null && !lastPlayer.equals(piece.getPlayer())) {
+                        return null;
+                    }
+                }
+            }
             return lastPlayer;
         }
         return null;
