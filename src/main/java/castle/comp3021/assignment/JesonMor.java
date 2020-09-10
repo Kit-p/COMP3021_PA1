@@ -90,7 +90,7 @@ public class JesonMor extends Game {
             // win by capturing all enemy pieces
             for (Piece[] pieces : this.board) {
                 for (Piece piece : pieces) {
-                    if (piece != null && !lastPlayer.equals(piece.getPlayer())) {
+                    if (piece != null && !(piece.getPlayer().equals(lastPlayer))) {
                         return null;
                     }
                 }
