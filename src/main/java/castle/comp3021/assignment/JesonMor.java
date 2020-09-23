@@ -176,6 +176,17 @@ public class JesonMor extends Game {
      */
     public void movePiece(@NotNull Move move) {
         // TODO student implementation
+        if (move == null) {
+            return;
+        }
+        Place source = move.getSource();
+        int sourceX = source.x();
+        int sourceY = source.y();
+        Place destination = move.getDestination();
+        int destinationX = destination.x();
+        int destinationY = destination.y();
+        this.board[destinationX][destinationY] = board[sourceX][sourceY];
+        this.board[sourceX][sourceY] = null;
     }
 
     /**
