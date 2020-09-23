@@ -204,4 +204,129 @@ public class JesonMor extends Game {
         // TODO student implementation
         return new Move[0];
     }
+
+    /**
+     * Validate a move
+     * This is a utility method private to this class.
+     * This method must be called before executing the move.
+     * It will check the boundaries of the gameboard, move protection, the rules specific to the piece, and the invoking player.
+     *
+     * @param player the player to invoke the move
+     * @param piece  the piece to execute the move
+     * @param move   the move to be validated
+     * @return a boolean to indicate the validity of the move
+     */
+    private boolean validateMove(Player player, Piece piece, Move move) {
+        if (move == null) {
+            return false;
+        }
+
+        Place source = move.getSource();
+        int sourceX = source.x();
+        int sourceY = source.y();
+        Place destination = move.getDestination();
+        int destinationX = destination.x();
+        int destinationY = destination.y();
+        int distanceX = Math.abs(destinationX - sourceX);
+        int distanceY = Math.abs(destinationY - sourceY);
+
+        if (piece == null) {
+            piece = board[sourceX][sourceY];
+        }
+
+        if (player == null) {
+            player = piece.getPlayer();
+        }
+
+        if (!piece.getPlayer().equals(player)) {
+            return false;
+        }
+
+        Piece capturedPiece = board[destinationX][destinationY];
+        if (capturedPiece != null && (this.numMoves < configuration.getNumMovesProtection()
+                || capturedPiece.getPlayer().equals(player))) {
+            return false;
+        }
+
+        // validate coordinates
+        int size = configuration.getSize();
+        if (destinationX >= size || destinationY >= size
+                || sourceX >= size || sourceY >= size
+                || destinationX < 0 || destinationY < 0
+                || sourceX < 0 || sourceY < 0) {
+            return false;
+        }
+        if (distanceX == 0 && distanceY == 0) {
+            return false;
+        }
+
+        // validate move
+        char label = piece.getLabel();
+        if (label == 'K') {
+            boolean isMoveHorizontal = (distanceX == 2 && distanceY == 1);
+            boolean isMoveVertical = (distanceX == 1 && distanceY == 2);
+            int blockingX, blockingY;
+            if (isMoveHorizontal) {
+                blockingX = (sourceX + destinationX) / 2;
+                blockingY = sourceY;
+            } else if (isMoveVertical) {
+                blockingX = sourceX;
+                blockingY = (sourceY + destinationY) / 2;
+            } else {
+                return false;
+            }
+            if (this.board[blockingX][blockingY] != null) {
+                return false;
+            }
+        } else if (label == 'A') {
+            boolean isMoveHorizontal = (distanceY == 0);
+            boolean isMoveVertical = (distanceX == 0);
+            int start, end;
+            int inBetweenPieceCount = 0;
+            if (isMoveHorizontal) {
+                if (sourceX < destinationX) {
+                    start = sourceX;
+                    end = destinationX;
+                } else {
+                    start = destinationX;
+                    end = sourceX;
+                }
+                for (int x = start; x < end; x++) {
+                    if (this.board[x][sourceY] != null) {
+                        inBetweenPieceCount++;
+                    }
+                    if (inBetweenPieceCount > 1) {
+                        break;
+                    }
+                }
+            } else if (isMoveVertical) {
+                if (sourceY < destinationY) {
+                    start = sourceY;
+                    end = destinationY;
+                } else {
+                    start = destinationY;
+                    end = sourceY;
+                }
+                for (int y = start; y < end; y++) {
+                    if (this.board[sourceX][y] != null) {
+                        inBetweenPieceCount++;
+                    }
+                    if (inBetweenPieceCount > 1) {
+                        break;
+                    }
+                }
+            } else {
+                return false;
+            }
+            if (capturedPiece != null && inBetweenPieceCount != 1) {
+                return false;
+            } else if (capturedPiece == null && inBetweenPieceCount != 0) {
+                return false;
+            }
+        } else {
+            return false;
+        }
+
+        return true;
+    }
 }
