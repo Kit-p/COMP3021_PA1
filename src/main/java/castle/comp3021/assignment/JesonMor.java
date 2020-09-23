@@ -88,14 +88,36 @@ public class JesonMor extends Game {
                 }
             }
             // win by capturing all enemy pieces
+            boolean hasCapturedAllEnemyPieces = true;
             for (Piece[] pieces : this.board) {
                 for (Piece piece : pieces) {
                     if (piece != null && !(piece.getPlayer().equals(lastPlayer))) {
-                        return null;
+                        hasCapturedAllEnemyPieces = false;
+                        break;
                     }
                 }
+                if (!hasCapturedAllEnemyPieces) {
+                    break;
+                }
             }
-            return lastPlayer;
+            if (hasCapturedAllEnemyPieces) {
+                return lastPlayer;
+            }
+            // win in a tie
+            Player nextPlayer = null;
+            Player[] players = configuration.getPlayers();
+            for (Player player : players) {
+                if (!(player.equals(lastPlayer))) {
+                    nextPlayer = player;
+                    break;
+                }
+            }
+            Move[] availableMoves = getAvailableMoves(nextPlayer);
+            if (availableMoves.length == 0) {
+                int lastPlayerScore = lastPlayer.getScore();
+                int nextPlayerScore = nextPlayer.getScore();
+                return (lastPlayerScore < nextPlayerScore) ? lastPlayer : nextPlayer;
+            }
         }
         return null;
     }
