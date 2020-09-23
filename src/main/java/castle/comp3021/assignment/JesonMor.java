@@ -141,6 +141,21 @@ public class JesonMor extends Game {
      */
     public void updateScore(Player player, Piece piece, Move move) {
         // TODO student implementation
+        if (player == null || piece == null || move == null) {
+            return;
+        }
+        Place source = move.getSource();
+        int sourceX = source.x();
+        int sourceY = source.y();
+        Place destination = move.getDestination();
+        int destinationX = destination.x();
+        int destinationY = destination.y();
+        // update score
+        int distanceX = Math.abs(destinationX - sourceX);
+        int distanceY = Math.abs(destinationY - sourceY);
+        int manhattanDistance = distanceX + distanceY;
+        int oldScore = player.getScore();
+        player.setScore(oldScore + manhattanDistance);
     }
 
 
