@@ -1,10 +1,12 @@
 package castle.comp3021.assignment;
 
+import castle.comp3021.assignment.piece.Archer;
 import castle.comp3021.assignment.piece.Knight;
 import castle.comp3021.assignment.player.ConsolePlayer;
 import castle.comp3021.assignment.player.RandomPlayer;
 import castle.comp3021.assignment.protocol.Configuration;
 import castle.comp3021.assignment.protocol.Game;
+import castle.comp3021.assignment.protocol.Piece;
 import castle.comp3021.assignment.protocol.Player;
 
 public class Main {
@@ -28,17 +30,26 @@ public class Main {
      */
     public static Game createGame(int size, int numMovesProtection) {
         // TODO student implementation
-        // The following lines are example of constructing a game object, you may modify them as you wish.
-        var userPlayer = new ConsolePlayer("UserPlayer");
-        var computerPlayer = new RandomPlayer("ComputerPlayer");
-        // we give
-        Configuration configuration = new Configuration(size, new Player[]{userPlayer, computerPlayer}, numMovesProtection);
-        var knight1 = new Knight(userPlayer);
-        var knight2 = new Knight(computerPlayer);
-        // put knight1 at place(0,0) on the gameboard
-        configuration.addInitialPiece(knight1, 0, 0);
-        // put knight2 at place(1,0) on the gameboard
-        configuration.addInitialPiece(knight2, 1, 0);
+        Player userPlayer = new ConsolePlayer("UserPlayer");
+        Player computerPlayer = new RandomPlayer("ComputerPlayer");
+        Player[] players = new Player[]{userPlayer, computerPlayer};
+        Configuration configuration = new Configuration(size, players, numMovesProtection);
+
+        for (int x = 0; x < size; x++) {
+            Piece userPiece, computerPiece;
+            if (x % 2 == 0) {
+                // create Knight on even number x-coordinate
+                userPiece = new Knight(userPlayer);
+                computerPiece = new Knight(computerPlayer);
+            } else {
+                // create Archer on odd number x-coordinate
+                userPiece = new Archer(userPlayer);
+                computerPiece = new Archer(computerPlayer);
+            }
+            configuration.addInitialPiece(userPiece, x, 0);
+            configuration.addInitialPiece(computerPiece, x, size - 1);
+        }
+
         return new JesonMor(configuration);
     }
 
