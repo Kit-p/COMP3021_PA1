@@ -1,5 +1,7 @@
 package castle.comp3021.assignment;
 
+import castle.comp3021.assignment.piece.Archer;
+import castle.comp3021.assignment.piece.Knight;
 import castle.comp3021.assignment.protocol.*;
 import org.jetbrains.annotations.NotNull;
 
@@ -82,7 +84,7 @@ public class JesonMor extends Game {
         }
         if (this.numMoves > configuration.getNumMovesProtection()) {
             // win by leaving central place as a Knight
-            if (lastPiece.getLabel() == 'K') {
+            if (lastPiece instanceof Knight) {
                 Place centralPlace = getCentralPlace();
                 Place source = lastMove.getSource();
                 if (source.equals(centralPlace)) {
@@ -280,8 +282,7 @@ public class JesonMor extends Game {
         }
 
         // validate move
-        char label = piece.getLabel();
-        if (label == 'K') {
+        if (piece instanceof Knight) {
             boolean isMoveHorizontal = (distanceX == 2 && distanceY == 1);
             boolean isMoveVertical = (distanceX == 1 && distanceY == 2);
             int blockingX, blockingY;
@@ -297,7 +298,7 @@ public class JesonMor extends Game {
             if (this.board[blockingX][blockingY] != null) {
                 return false;
             }
-        } else if (label == 'A') {
+        } else if (piece instanceof Archer) {
             boolean isMoveHorizontal = (distanceY == 0);
             boolean isMoveVertical = (distanceX == 0);
             int start, end;
