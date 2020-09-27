@@ -33,7 +33,14 @@ public class RandomPlayer extends Player {
     @Override
     public @NotNull Move nextMove(Game game, Move[] availableMoves) {
         // TODO student implementation
-        return availableMoves[0];
+        int index;
+        while (true) {
+            index = (int)(Math.random() * availableMoves.length);
+            if (validateMove(game, availableMoves[index])) {
+                break;
+            }
+        }
+        return availableMoves[index];
     }
 
     /**
