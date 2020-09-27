@@ -253,6 +253,9 @@ public class JesonMor extends Game {
 
         if (piece == null) {
             piece = board[sourceX][sourceY];
+            if (piece == null) {
+                return false;
+            }
         }
 
         if (player == null) {

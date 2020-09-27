@@ -70,7 +70,7 @@ public class RandomPlayer extends Player {
         int distanceY = Math.abs(destinationY - sourceY);
         Piece piece = game.getPiece(sourceX, sourceY);
 
-        if (!piece.getPlayer().equals(this)) {
+        if (piece == null || !piece.getPlayer().equals(this)) {
             return false;
         }
 
