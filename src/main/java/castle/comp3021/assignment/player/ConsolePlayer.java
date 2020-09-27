@@ -62,11 +62,11 @@ public class ConsolePlayer extends Player {
             System.out.print("[" + this.name + "] Make a Move: ");
             input = sc.nextLine();
             Matcher matcher = pattern.matcher(input);
-            if (matcher.matches() && matcher.groupCount() == 5) {
+            if (matcher.matches()) {
                 sourceX = matcher.group(1).charAt(0) - 'a';
-                sourceY = Integer.parseInt(matcher.group(2));
+                sourceY = Integer.parseInt(matcher.group(2)) - 1;
                 destinationX = matcher.group(3).charAt(0) - 'a';
-                destinationY = Integer.parseInt(matcher.group(4));
+                destinationY = Integer.parseInt(matcher.group(4)) - 1;
                 move = new Move(sourceX, sourceY, destinationX, destinationY);
                 if (destinationX >= size || destinationY >= size
                         || sourceX >= size || sourceY >= size
