@@ -1,10 +1,6 @@
 package castle.comp3021.assignment.piece;
 
-import castle.comp3021.assignment.protocol.Game;
-import castle.comp3021.assignment.protocol.Move;
-import castle.comp3021.assignment.protocol.Piece;
-import castle.comp3021.assignment.protocol.Place;
-import castle.comp3021.assignment.protocol.Player;
+import castle.comp3021.assignment.protocol.*;
 
 /**
  * Archer piece that moves similar to cannon in chinese chess.
@@ -45,5 +41,98 @@ public class Archer extends Piece {
     public Move[] getAvailableMoves(Game game, Place source) {
         // TODO student implementation
         return new Move[0];
+    }
+
+    /**
+     * Validate a move
+     * This is a utility method private to this class.
+     * This method must be called in this.getAvailableMoves().
+     * It will check boundaries of the gameboard, move protection and the rules specific to Archer.
+     *
+     * @param game the game object
+     * @param move the move to be validated
+     * @return a boolean to indicate the validity of the move
+     */
+    private boolean validateMove(Game game, Move move) {
+        if (game == null || move == null) {
+            return false;
+        }
+
+        Configuration configuration = game.getConfiguration();
+        int numMoves = game.getNumMoves();
+        Place source = move.getSource();
+        int sourceX = source.x();
+        int sourceY = source.y();
+        Place destination = move.getDestination();
+        int destinationX = destination.x();
+        int destinationY = destination.y();
+        int distanceX = Math.abs(destinationX - sourceX);
+        int distanceY = Math.abs(destinationY - sourceY);
+
+        Piece capturedPiece = game.getPiece(destinationX, destinationY);
+        if (capturedPiece != null && (numMoves < configuration.getNumMovesProtection()
+                || capturedPiece.getPlayer().equals(this.getPlayer()))) {
+            return false;
+        }
+
+        // validate coordinates
+        int size = configuration.getSize();
+        if (destinationX >= size || destinationY >= size
+                || sourceX >= size || sourceY >= size
+                || destinationX < 0 || destinationY < 0
+                || sourceX < 0 || sourceY < 0) {
+            return false;
+        }
+        if (distanceX == 0 && distanceY == 0) {
+            return false;
+        }
+
+        // validate move
+        boolean isMoveHorizontal = (distanceY == 0);
+        boolean isMoveVertical = (distanceX == 0);
+        int start, end;
+        int inBetweenPieceCount = 0;
+        if (isMoveHorizontal) {
+            if (sourceX < destinationX) {
+                start = sourceX;
+                end = destinationX;
+            } else {
+                start = destinationX;
+                end = sourceX;
+            }
+            for (int x = start; x < end; x++) {
+                if (game.getPiece(x, sourceY) != null) {
+                    inBetweenPieceCount++;
+                }
+                if (inBetweenPieceCount > 1) {
+                    break;
+                }
+            }
+        } else if (isMoveVertical) {
+            if (sourceY < destinationY) {
+                start = sourceY;
+                end = destinationY;
+            } else {
+                start = destinationY;
+                end = sourceY;
+            }
+            for (int y = start; y < end; y++) {
+                if (game.getPiece(sourceX, y) != null) {
+                    inBetweenPieceCount++;
+                }
+                if (inBetweenPieceCount > 1) {
+                    break;
+                }
+            }
+        } else {
+            return false;
+        }
+        if (capturedPiece != null && inBetweenPieceCount != 1) {
+            return false;
+        } else if (capturedPiece == null && inBetweenPieceCount != 0) {
+            return false;
+        }
+
+        return true;
     }
 }
