@@ -5,6 +5,11 @@ import castle.comp3021.assignment.piece.Knight;
 import castle.comp3021.assignment.protocol.*;
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Arrays;
+import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 /**
  * The player that makes move according to user input from console.
  */
@@ -43,7 +48,44 @@ public class ConsolePlayer extends Player {
     @Override
     public @NotNull Move nextMove(Game game, Move[] availableMoves) {
         // TODO student implementation
-        return availableMoves[0];
+        Scanner sc = new Scanner(System.in);
+        String input = null;
+        Pattern pattern = Pattern.compile("^\\s*([a-z])(\\d+)\\s*->\\s*([a-z])(\\d+)\\s*$");
+        int sourceX, sourceY, destinationX, destinationY;
+        Move move = null;
+        Configuration configuration = game.getConfiguration();
+        int size = configuration.getSize();
+        String invalidInputText = "[Invalid Move]: ";
+        String invalidInputCause = null;
+
+        while (true) {
+            System.out.print("[" + this.name + "] Make a Move: ");
+            input = sc.nextLine();
+            Matcher matcher = pattern.matcher(input);
+            if (matcher.matches() && matcher.groupCount() == 5) {
+                sourceX = matcher.group(1).charAt(0) - 'a';
+                sourceY = Integer.parseInt(matcher.group(2));
+                destinationX = matcher.group(3).charAt(0) - 'a';
+                destinationY = Integer.parseInt(matcher.group(4));
+                move = new Move(sourceX, sourceY, destinationX, destinationY);
+                if (destinationX >= size || destinationY >= size
+                        || sourceX >= size || sourceY >= size
+                        || destinationX < 0 || destinationY < 0
+                        || sourceX < 0 || sourceY < 0) {
+                    invalidInputCause = "place is out of boundary of gameboard";
+                } else if (Arrays.stream(availableMoves).noneMatch(move::equals) || !validateMove(game, move)) {
+                    invalidInputCause = "piece move rule is violated";
+                } else {
+                    break;
+                }
+            } else {
+                invalidInputCause = "Incorrect format";
+            }
+
+            System.out.println(invalidInputText + invalidInputCause);
+        }
+
+        return move;
     }
 
     /**
