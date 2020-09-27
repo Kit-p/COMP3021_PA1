@@ -30,8 +30,8 @@ public class Main {
      */
     public static Game createGame(int size, int numMovesProtection) {
         // TODO student implementation
-        Player userPlayer = new ConsolePlayer("UserPlayer");
-        Player computerPlayer = new RandomPlayer("ComputerPlayer");
+        Player userPlayer = new ConsolePlayer("White");
+        Player computerPlayer = new RandomPlayer("Black");
         Player[] players = new Player[]{userPlayer, computerPlayer};
         Configuration configuration = new Configuration(size, players, numMovesProtection);
 
