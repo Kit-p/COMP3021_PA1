@@ -30,6 +30,18 @@ public class Main {
      */
     public static Game createGame(int size, int numMovesProtection) {
         // TODO student implementation
+        // validate arguments
+        if (size < 3) {
+            throw new IllegalArgumentException("size of gameboard must be at least 3");
+        } else if (size % 2 == 0) {
+            throw new IllegalArgumentException("size of gameboard must be an odd number");
+        } else if (size > 26) {
+            throw new IllegalArgumentException("size of gameboard is at most 26");
+        }
+        if (numMovesProtection < 0) {
+            throw new IllegalArgumentException("number of moves with capture protection cannot be negative");
+        }
+
         Player userPlayer = new ConsolePlayer("White");
         Player computerPlayer = new RandomPlayer("Black");
         Player[] players = new Player[]{userPlayer, computerPlayer};
