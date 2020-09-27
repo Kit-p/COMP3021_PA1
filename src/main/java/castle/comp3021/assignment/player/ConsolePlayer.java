@@ -49,7 +49,7 @@ public class ConsolePlayer extends Player {
     /**
      * Validate a move
      * This is a utility method private to this class.
-     * This method must be called before executing the move.
+     * This method must be called this.nextMove().
      * It will check the boundaries of the gameboard, move protection, the rules specific to the piece, and the invoking player.
      *
      * @param game   the game object
