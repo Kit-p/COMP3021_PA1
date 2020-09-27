@@ -212,7 +212,7 @@ public class JesonMor extends Game {
         for (int x = 0; x < size; x++) {
             for (int y = 0; y < size; y++) {
                 Piece currentPiece = board[x][y];
-                if (currentPiece.getPlayer().equals(player)) {
+                if (currentPiece != null && currentPiece.getPlayer().equals(player)) {
                     Place currentPlace = new Place(x, y);
                     Move[] availableMoves = currentPiece.getAvailableMoves(this, currentPlace);
                     for (Move move : availableMoves) {
