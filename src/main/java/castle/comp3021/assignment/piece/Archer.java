@@ -2,6 +2,8 @@ package castle.comp3021.assignment.piece;
 
 import castle.comp3021.assignment.protocol.*;
 
+import java.util.ArrayList;
+
 /**
  * Archer piece that moves similar to cannon in chinese chess.
  * Rules of move of Archer can be found in wikipedia (https://en.wikipedia.org/wiki/Xiangqi#Cannon).
@@ -40,7 +42,26 @@ public class Archer extends Piece {
     @Override
     public Move[] getAvailableMoves(Game game, Place source) {
         // TODO student implementation
-        return new Move[0];
+        ArrayList<Move> allAvailableMoves = new ArrayList<Move>();
+        Configuration configuration = game.getConfiguration();
+        int size = configuration.getSize();
+        int sourceX = source.x();
+        int sourceY = source.y();
+        for (int x = 0, y = 0; x < size && y < size; x++, y++) {
+            if (x != sourceX) {
+                Move move = new Move(source, x, sourceY);
+                if (validateMove(game, move)) {
+                    allAvailableMoves.add(move);
+                }
+            }
+            if (y != sourceY) {
+                Move move = new Move(source, sourceX, y);
+                if (validateMove(game, move)) {
+                    allAvailableMoves.add(move);
+                }
+            }
+        }
+        return allAvailableMoves.toArray(new Move[allAvailableMoves.size()]);
     }
 
     /**
