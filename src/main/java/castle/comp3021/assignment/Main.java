@@ -8,6 +8,7 @@ import castle.comp3021.assignment.protocol.Configuration;
 import castle.comp3021.assignment.protocol.Game;
 import castle.comp3021.assignment.protocol.Piece;
 import castle.comp3021.assignment.protocol.Player;
+import castle.comp3021.assignment.protocol.exception.InvalidConfigurationError;
 
 public class Main {
     /**
@@ -32,14 +33,14 @@ public class Main {
         // TODO student implementation
         // validate arguments
         if (size < 3) {
-            throw new IllegalArgumentException("size of gameboard must be at least 3");
+            throw new InvalidConfigurationError("size of gameboard must be at least 3");
         } else if (size % 2 == 0) {
-            throw new IllegalArgumentException("size of gameboard must be an odd number");
+            throw new InvalidConfigurationError("size of gameboard must be an odd number");
         } else if (size > 26) {
-            throw new IllegalArgumentException("size of gameboard is at most 26");
+            throw new InvalidConfigurationError("size of gameboard is at most 26");
         }
         if (numMovesProtection < 0) {
-            throw new IllegalArgumentException("number of moves with capture protection cannot be negative");
+            throw new InvalidConfigurationError("number of moves with capture protection cannot be negative");
         }
 
         Player userPlayer = new ConsolePlayer("White");
