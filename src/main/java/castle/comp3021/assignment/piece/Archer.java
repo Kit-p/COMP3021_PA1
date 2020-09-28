@@ -120,7 +120,7 @@ public class Archer extends Piece {
                 start = destinationX;
                 end = sourceX;
             }
-            for (int x = start; x < end; x++) {
+            for (int x = start + 1; x < end; x++) {
                 if (game.getPiece(x, sourceY) != null) {
                     inBetweenPieceCount++;
                 }
@@ -136,7 +136,7 @@ public class Archer extends Piece {
                 start = destinationY;
                 end = sourceY;
             }
-            for (int y = start; y < end; y++) {
+            for (int y = start + 1; y < end; y++) {
                 if (game.getPiece(sourceX, y) != null) {
                     inBetweenPieceCount++;
                 }

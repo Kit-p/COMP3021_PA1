@@ -314,7 +314,7 @@ public class JesonMor extends Game {
                     start = destinationX;
                     end = sourceX;
                 }
-                for (int x = start; x < end; x++) {
+                for (int x = start + 1; x < end; x++) {
                     if (this.board[x][sourceY] != null) {
                         inBetweenPieceCount++;
                     }
@@ -330,7 +330,7 @@ public class JesonMor extends Game {
                     start = destinationY;
                     end = sourceY;
                 }
-                for (int y = start; y < end; y++) {
+                for (int y = start + 1; y < end; y++) {
                     if (this.board[sourceX][y] != null) {
                         inBetweenPieceCount++;
                     }
