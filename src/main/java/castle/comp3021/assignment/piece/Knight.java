@@ -43,17 +43,19 @@ public class Knight extends Piece {
         int size = configuration.getSize();
         int sourceX = source.x();
         int sourceY = source.y();
-        for (int x = 0, y = 0; x < size && y < size; x++, y++) {
-            if (x != sourceX) {
-                Move move = new Move(source, x, sourceY);
-                if (validateMove(game, move)) {
-                    allAvailableMoves.add(move);
+        for (int x = 0; x < size; x++) {
+            for (int y = 0; y < size; y++) {
+                if (x != sourceX) {
+                    Move move = new Move(source, x, sourceY);
+                    if (validateMove(game, move)) {
+                        allAvailableMoves.add(move);
+                    }
                 }
-            }
-            if (y != sourceY) {
-                Move move = new Move(source, sourceX, y);
-                if (validateMove(game, move)) {
-                    allAvailableMoves.add(move);
+                if (y != sourceY) {
+                    Move move = new Move(source, sourceX, y);
+                    if (validateMove(game, move)) {
+                        allAvailableMoves.add(move);
+                    }
                 }
             }
         }
