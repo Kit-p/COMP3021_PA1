@@ -154,8 +154,6 @@ public class RandomPlayer extends Player {
             } else if (capturedPiece == null && inBetweenPieceCount != 0) {
                 return false;
             }
-        } else {
-            return false;
         }
 
         return true;
