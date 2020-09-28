@@ -251,6 +251,18 @@ public class JesonMor extends Game {
         int distanceX = Math.abs(destinationX - sourceX);
         int distanceY = Math.abs(destinationY - sourceY);
 
+        // validate coordinates
+        int size = configuration.getSize();
+        if (destinationX >= size || destinationY >= size
+                || sourceX >= size || sourceY >= size
+                || destinationX < 0 || destinationY < 0
+                || sourceX < 0 || sourceY < 0) {
+            return false;
+        }
+        if (distanceX == 0 && distanceY == 0) {
+            return false;
+        }
+
         if (piece == null) {
             piece = board[sourceX][sourceY];
             if (piece == null) {
@@ -269,18 +281,6 @@ public class JesonMor extends Game {
         Piece capturedPiece = board[destinationX][destinationY];
         if (capturedPiece != null && (this.numMoves < configuration.getNumMovesProtection()
                 || capturedPiece.getPlayer().equals(player))) {
-            return false;
-        }
-
-        // validate coordinates
-        int size = configuration.getSize();
-        if (destinationX >= size || destinationY >= size
-                || sourceX >= size || sourceY >= size
-                || destinationX < 0 || destinationY < 0
-                || sourceX < 0 || sourceY < 0) {
-            return false;
-        }
-        if (distanceX == 0 && distanceY == 0) {
             return false;
         }
 

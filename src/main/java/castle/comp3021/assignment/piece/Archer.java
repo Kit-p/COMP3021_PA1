@@ -89,12 +89,6 @@ public class Archer extends Piece {
         int distanceX = Math.abs(destinationX - sourceX);
         int distanceY = Math.abs(destinationY - sourceY);
 
-        Piece capturedPiece = game.getPiece(destinationX, destinationY);
-        if (capturedPiece != null && (numMoves < configuration.getNumMovesProtection()
-                || capturedPiece.getPlayer().equals(this.getPlayer()))) {
-            return false;
-        }
-
         // validate coordinates
         int size = configuration.getSize();
         if (destinationX >= size || destinationY >= size
@@ -104,6 +98,12 @@ public class Archer extends Piece {
             return false;
         }
         if (distanceX == 0 && distanceY == 0) {
+            return false;
+        }
+
+        Piece capturedPiece = game.getPiece(destinationX, destinationY);
+        if (capturedPiece != null && (numMoves < configuration.getNumMovesProtection()
+                || capturedPiece.getPlayer().equals(this.getPlayer()))) {
             return false;
         }
 

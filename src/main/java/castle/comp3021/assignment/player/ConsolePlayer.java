@@ -113,17 +113,6 @@ public class ConsolePlayer extends Player {
         int destinationY = destination.y();
         int distanceX = Math.abs(destinationX - sourceX);
         int distanceY = Math.abs(destinationY - sourceY);
-        Piece piece = game.getPiece(sourceX, sourceY);
-
-        if (piece == null || !piece.getPlayer().equals(this)) {
-            return false;
-        }
-
-        Piece capturedPiece = game.getPiece(destinationX, destinationY);
-        if (capturedPiece != null && (numMoves < configuration.getNumMovesProtection()
-                || capturedPiece.getPlayer().equals(this))) {
-            return false;
-        }
 
         // validate coordinates
         int size = configuration.getSize();
@@ -134,6 +123,17 @@ public class ConsolePlayer extends Player {
             return false;
         }
         if (distanceX == 0 && distanceY == 0) {
+            return false;
+        }
+
+        Piece piece = game.getPiece(sourceX, sourceY);
+        if (piece == null || !piece.getPlayer().equals(this)) {
+            return false;
+        }
+
+        Piece capturedPiece = game.getPiece(destinationX, destinationY);
+        if (capturedPiece != null && (numMoves < configuration.getNumMovesProtection()
+                || capturedPiece.getPlayer().equals(this))) {
             return false;
         }
 
