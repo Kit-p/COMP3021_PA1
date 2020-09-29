@@ -50,7 +50,7 @@ public class ConsolePlayer extends Player {
         // TODO student implementation
         Scanner sc = new Scanner(System.in);
         String input = null;
-        Pattern pattern = Pattern.compile("^\\s*([a-z])(\\d+)\\s*->\\s*([a-z])(\\d+)\\s*$");
+        Pattern pattern = Pattern.compile("^\\s*([a-zA-z])(\\d+)\\s*->\\s*([a-zA-Z])(\\d+)\\s*$");
         int sourceX, sourceY, destinationX, destinationY;
         Move move = null;
         Configuration configuration = game.getConfiguration();
@@ -63,9 +63,9 @@ public class ConsolePlayer extends Player {
             input = sc.nextLine();
             Matcher matcher = pattern.matcher(input);
             if (matcher.matches()) {
-                sourceX = matcher.group(1).charAt(0) - 'a';
+                sourceX = matcher.group(1).toLowerCase().charAt(0) - 'a';
                 sourceY = Integer.parseInt(matcher.group(2)) - 1;
-                destinationX = matcher.group(3).charAt(0) - 'a';
+                destinationX = matcher.group(3).toLowerCase().charAt(0) - 'a';
                 destinationY = Integer.parseInt(matcher.group(4)) - 1;
                 move = new Move(sourceX, sourceY, destinationX, destinationY);
                 if (destinationX >= size || destinationY >= size
