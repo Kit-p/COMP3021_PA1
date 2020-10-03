@@ -50,7 +50,7 @@ public class ConsolePlayer extends Player {
         // TODO student implementation
         Scanner sc = new Scanner(System.in);
         String input;
-        Pattern pattern = Pattern.compile("^\\s*([a-zA-z])(\\d+)\\s*->\\s*([a-zA-Z])(\\d+)\\s*$");
+        Pattern pattern = Pattern.compile("^\\s*([a-zA-Z])(\\d+)\\s*->\\s*([a-zA-Z])(\\d+)\\s*$");
         int sourceX, sourceY, destinationX, destinationY;
         Move move;
         Configuration configuration = game.getConfiguration();
