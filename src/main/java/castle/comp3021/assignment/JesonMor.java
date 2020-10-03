@@ -50,7 +50,6 @@ public class JesonMor extends Game {
             Piece chosenPiece = getPiece(chosenMove.getSource());
             this.movePiece(chosenMove);
             this.updateScore(currentPlayer, chosenPiece, chosenMove);
-            this.numMoves++;
             this.refreshOutput();
             winner = getWinner(currentPlayer, chosenPiece, chosenMove);
             // student implementation ends here
@@ -192,6 +191,7 @@ public class JesonMor extends Game {
         int destinationY = destination.y();
         this.board[destinationX][destinationY] = board[sourceX][sourceY];
         this.board[sourceX][sourceY] = null;
+        this.numMoves++;
     }
 
     /**
