@@ -38,9 +38,7 @@ public class Knight extends Piece {
     @Override
     public Move[] getAvailableMoves(Game game, Place source) {
         // TODO student implementation
-        ArrayList<Move> allAvailableMoves = new ArrayList<Move>();
-        Configuration configuration = game.getConfiguration();
-        int size = configuration.getSize();
+        ArrayList<Move> allAvailableMoves = new ArrayList<>();
         int sourceX = source.x();
         int sourceY = source.y();
         int shortEdge = 1;
@@ -66,7 +64,7 @@ public class Knight extends Piece {
                 coefficientB *= -1;
             }
         }
-        return allAvailableMoves.toArray(new Move[allAvailableMoves.size()]);
+        return allAvailableMoves.toArray(new Move[0]);
     }
 
     /**

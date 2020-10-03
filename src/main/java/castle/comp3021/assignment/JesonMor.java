@@ -37,7 +37,7 @@ public class JesonMor extends Game {
     @Override
     public Player start() {
         // reset all things
-        Player winner = null;
+        Player winner;
         this.numMoves = 0;
         this.board = configuration.getInitialBoard();
         this.currentPlayer = null;
@@ -116,6 +116,7 @@ public class JesonMor extends Game {
                 break;
             }
         }
+        assert nextPlayer != null;
         Move[] availableMoves = getAvailableMoves(nextPlayer);
         if (availableMoves.length == 0) {
             int lastPlayerScore = lastPlayer.getScore();
@@ -180,9 +181,6 @@ public class JesonMor extends Game {
      */
     public void movePiece(@NotNull Move move) {
         // TODO student implementation
-        if (move == null) {
-            return;
-        }
         Place source = move.getSource();
         int sourceX = source.x();
         int sourceY = source.y();
@@ -207,7 +205,7 @@ public class JesonMor extends Game {
      */
     public @NotNull Move[] getAvailableMoves(Player player) {
         // TODO student implementation
-        ArrayList<Move> allAvailableMoves = new ArrayList<Move>();
+        ArrayList<Move> allAvailableMoves = new ArrayList<>();
         int size = configuration.getSize();
         for (int x = 0; x < size; x++) {
             for (int y = 0; y < size; y++) {
@@ -223,7 +221,7 @@ public class JesonMor extends Game {
                 }
             }
         }
-        return allAvailableMoves.toArray(new Move[allAvailableMoves.size()]);
+        return allAvailableMoves.toArray(new Move[0]);
     }
 
     /**
@@ -343,7 +341,8 @@ public class JesonMor extends Game {
             }
             if (capturedPiece != null && inBetweenPieceCount != 1) {
                 return false;
-            } else if (capturedPiece == null && inBetweenPieceCount != 0) {
+            }
+            if (capturedPiece == null && inBetweenPieceCount != 0) {
                 return false;
             }
         }

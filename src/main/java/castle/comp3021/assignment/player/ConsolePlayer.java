@@ -49,14 +49,14 @@ public class ConsolePlayer extends Player {
     public @NotNull Move nextMove(Game game, Move[] availableMoves) {
         // TODO student implementation
         Scanner sc = new Scanner(System.in);
-        String input = null;
+        String input;
         Pattern pattern = Pattern.compile("^\\s*([a-zA-z])(\\d+)\\s*->\\s*([a-zA-Z])(\\d+)\\s*$");
         int sourceX, sourceY, destinationX, destinationY;
-        Move move = null;
+        Move move;
         Configuration configuration = game.getConfiguration();
         int size = configuration.getSize();
         String invalidInputText = "[Invalid Move]: ";
-        String invalidInputCause = null;
+        String invalidInputCause;
 
         while (true) {
             System.out.print("[" + this.name + "] Make a Move: ");

@@ -8,7 +8,6 @@ import castle.comp3021.assignment.protocol.Configuration;
 import castle.comp3021.assignment.protocol.Game;
 import castle.comp3021.assignment.protocol.Piece;
 import castle.comp3021.assignment.protocol.Player;
-import castle.comp3021.assignment.protocol.exception.InvalidConfigurationError;
 
 public class Main {
     /**
