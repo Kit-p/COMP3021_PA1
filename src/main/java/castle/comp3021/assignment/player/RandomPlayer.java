@@ -33,6 +33,10 @@ public class RandomPlayer extends Player {
     @Override
     public @NotNull Move nextMove(Game game, Move[] availableMoves) {
         // TODO student implementation
+        if (game == null || availableMoves == null || availableMoves.length <= 0) {
+            throw new IllegalArgumentException();
+        }
+
         int index;
         while (true) {
             index = (int)(Math.random() * availableMoves.length);

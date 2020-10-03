@@ -48,6 +48,10 @@ public class ConsolePlayer extends Player {
     @Override
     public @NotNull Move nextMove(Game game, Move[] availableMoves) {
         // TODO student implementation
+        if (game == null || availableMoves == null || availableMoves.length <= 0) {
+            throw new IllegalArgumentException();
+        }
+
         Scanner sc = new Scanner(System.in);
         String input;
         Pattern pattern = Pattern.compile("^\\s*([a-zA-Z])(\\d+)\\s*->\\s*([a-zA-Z])(\\d+)\\s*$");

@@ -41,6 +41,10 @@ public class Archer extends Piece {
     @Override
     public Move[] getAvailableMoves(Game game, Place source) {
         // TODO student implementation
+        if (game == null || source == null || !game.getPiece(source).equals(this)) {
+            return new Move[0];
+        }
+
         ArrayList<Move> allAvailableMoves = new ArrayList<>();
         Configuration configuration = game.getConfiguration();
         int size = configuration.getSize();

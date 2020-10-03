@@ -205,6 +205,10 @@ public class JesonMor extends Game {
      */
     public @NotNull Move[] getAvailableMoves(Player player) {
         // TODO student implementation
+        if (player == null) {
+            return new Move[0];
+        }
+
         ArrayList<Move> allAvailableMoves = new ArrayList<>();
         int size = configuration.getSize();
         for (int x = 0; x < size; x++) {
