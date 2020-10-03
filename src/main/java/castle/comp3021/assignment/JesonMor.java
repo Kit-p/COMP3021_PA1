@@ -90,22 +90,22 @@ public class JesonMor extends Game {
                     return lastPlayer;
                 }
             }
-            // win by capturing all enemy pieces
-            boolean hasCapturedAllEnemyPieces = true;
-            for (Piece[] pieces : this.board) {
-                for (Piece piece : pieces) {
-                    if (piece != null && !(piece.getPlayer().equals(lastPlayer))) {
-                        hasCapturedAllEnemyPieces = false;
-                        break;
-                    }
-                }
-                if (!hasCapturedAllEnemyPieces) {
+        }
+        // win by capturing all enemy pieces
+        boolean hasCapturedAllEnemyPieces = true;
+        for (Piece[] pieces : this.board) {
+            for (Piece piece : pieces) {
+                if (piece != null && !(piece.getPlayer().equals(lastPlayer))) {
+                    hasCapturedAllEnemyPieces = false;
                     break;
                 }
             }
-            if (hasCapturedAllEnemyPieces) {
-                return lastPlayer;
+            if (!hasCapturedAllEnemyPieces) {
+                break;
             }
+        }
+        if (hasCapturedAllEnemyPieces) {
+            return lastPlayer;
         }
         // win in a tie
         Player nextPlayer = null;
