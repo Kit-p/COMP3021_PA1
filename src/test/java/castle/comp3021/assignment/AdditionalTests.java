@@ -276,12 +276,15 @@ public class AdditionalTests {
         Move move = new Move(new Place(0, 0), new Place(0, 1));
         MoveRecord moveRecord1 = new MoveRecord(mockPlayer, move);
         MoveRecord moveRecord2 = moveRecord1.clone();
-        MoveRecord moveRecord3 = new MoveRecord(new MockPlayer(), new Move(new Place(1, 0), new Place(0, 0)));
+        MoveRecord moveRecord3 = new MoveRecord(mockPlayer, new Move(new Place(1, 0), new Place(0, 0)));
+        MoveRecord moveRecord4 = new MoveRecord(new MockPlayer(), move);
         assertEquals(mockPlayer, moveRecord1.getPlayer());
         assertEquals(move, moveRecord1.getMove());
         assertTrue(moveRecord1.equals(moveRecord1));
         assertTrue(moveRecord1.equals(moveRecord2));
         assertFalse(moveRecord1.equals(moveRecord3));
+        assertFalse(moveRecord1.equals(moveRecord4));
+        assertFalse(moveRecord3.equals(moveRecord4));
         assertFalse(moveRecord1.equals(null));
         assertFalse(moveRecord1.equals(mockPlayer));
         assertEquals(moveRecord1.hashCode(), moveRecord2.hashCode());
@@ -472,7 +475,70 @@ public class AdditionalTests {
      * Test private validateMove() functions
      */
     @Test
-    public void testValidateMove3() {
+    public void testValidateMove3() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        ConsolePlayer player1 = new ConsolePlayer("player1");
+        RandomPlayer player2 = new RandomPlayer("player2");
+        Knight p1Knight = new Knight(player1);
+        Place p1KnightPlace = new Place(2, 3);
+        Knight p2Knight = new Knight(player2);
+        Place p2KnightPlace = new Place(2, 2);
+        Archer p1Archer1 = new Archer(player1);
+        Place p1Archer1Place = new Place(0, 2);
+        Archer p1Archer2 = new Archer(player1);
+        Place p1Archer2Place = new Place(4, 2);
+        Archer p2Archer1 = new Archer(player2);
+        Place p2Archer1Place = new Place(0, 0);
+        Archer p2Archer2 = new Archer(player2);
+        Place p2Archer2Place = new Place(3, 2);
+        Configuration config = new Configuration(5, new Player[]{player1, player2}, 1);
+        config.addInitialPiece(p1Knight, p1KnightPlace);
+        config.addInitialPiece(p2Knight, new Place(1, 0));
+        config.addInitialPiece(p1Archer1, p1Archer1Place);
+        config.addInitialPiece(p1Archer2, p1Archer2Place);
+        config.addInitialPiece(p2Archer1, p2Archer1Place);
+        config.addInitialPiece(p2Archer2, p2Archer2Place);
+        JesonMor game = new JesonMor(config);
+        game.movePiece(new Move(new Place(1, 0), p2KnightPlace));
+        Method jesonMor = JesonMor.class.getDeclaredMethod("validateMove", Player.class, Piece.class, Move.class);
+        jesonMor.setAccessible(true);
+        Method knight = Knight.class.getDeclaredMethod("validateMove", Game.class, Move.class);
+        knight.setAccessible(true);
+        Method archer = Archer.class.getDeclaredMethod("validateMove", Game.class, Move.class);
+        archer.setAccessible(true);
+        Method consolePlayer = ConsolePlayer.class.getDeclaredMethod("validateMove", Game.class, Move.class);
+        consolePlayer.setAccessible(true);
+        Method randomPlayer = RandomPlayer.class.getDeclaredMethod("validateMove", Game.class, Move.class);
+        randomPlayer.setAccessible(true);
 
+        assertFalse((boolean) jesonMor.invoke(game, player2, p2Knight, new Move(p2KnightPlace, 3, 4)));
+        assertFalse((boolean) jesonMor.invoke(game, player2, p2Knight, new Move(p2KnightPlace, 4, 3)));
+        assertTrue((boolean) jesonMor.invoke(game, player2, p2Knight, new Move(p2KnightPlace, 1, 0)));
+        assertTrue((boolean) jesonMor.invoke(game, player2, p2Knight, new Move(p2KnightPlace, 0, 1)));
+        assertTrue((boolean) jesonMor.invoke(game, player2, p2Archer2, new Move(p2Archer2Place, p1Archer1Place)));
+        assertFalse((boolean) jesonMor.invoke(game, player2, p2Archer2, new Move(p2Archer2Place, 1, 2)));
+        assertTrue((boolean) jesonMor.invoke(game, player1, p1Archer2, new Move(p1Archer2Place, p2KnightPlace)));
+        assertFalse((boolean) jesonMor.invoke(game, player1, p1Archer2, new Move(p1Archer2Place, 1, 2)));
+        assertTrue((boolean) jesonMor.invoke(game, player2, p2Archer1, new Move(p2Archer1Place, 4, 0)));
+        assertFalse((boolean) jesonMor.invoke(game, player2, p2Archer1, new Move(p2Archer1Place, 0, 4)));
+        assertFalse((boolean) knight.invoke(p2Knight, game, new Move(p2KnightPlace, 3, 4)));
+        assertFalse((boolean) knight.invoke(p2Knight, game, new Move(p2KnightPlace, 4, 3)));
+        assertTrue((boolean) knight.invoke(p2Knight, game, new Move(p2KnightPlace, 1, 0)));
+        assertTrue((boolean) knight.invoke(p2Knight, game, new Move(p2KnightPlace, 0, 1)));
+        assertTrue((boolean) archer.invoke(p2Archer2, game, new Move(p2Archer2Place, p1Archer1Place)));
+        assertFalse((boolean) archer.invoke(p2Archer2, game, new Move(p2Archer2Place, 1, 2)));
+        assertTrue((boolean) archer.invoke(p1Archer2, game, new Move(p1Archer2Place, p2KnightPlace)));
+        assertFalse((boolean) archer.invoke(p1Archer2, game, new Move(p1Archer2Place, 1, 2)));
+        assertTrue((boolean) archer.invoke(p2Archer1, game, new Move(p2Archer1Place, 4, 0)));
+        assertFalse((boolean) archer.invoke(p2Archer1, game, new Move(p2Archer1Place, 0, 4)));
+        assertTrue((boolean) consolePlayer.invoke(player1, game, new Move(p1Archer2Place, p2KnightPlace)));
+        assertFalse((boolean) consolePlayer.invoke(player1, game, new Move(p1Archer2Place, 1, 2)));
+        assertFalse((boolean) randomPlayer.invoke(player2, game, new Move(p2KnightPlace, 3, 4)));
+        assertFalse((boolean) randomPlayer.invoke(player2, game, new Move(p2KnightPlace, 4, 3)));
+        assertTrue((boolean) randomPlayer.invoke(player2, game, new Move(p2KnightPlace, 1, 0)));
+        assertTrue((boolean) randomPlayer.invoke(player2, game, new Move(p2KnightPlace, 0, 1)));
+        assertTrue((boolean) randomPlayer.invoke(player2, game, new Move(p2Archer2Place, p1Archer1Place)));
+        assertFalse((boolean) randomPlayer.invoke(player2, game, new Move(p2Archer2Place, 1, 2)));
+        assertTrue((boolean) randomPlayer.invoke(player2, game, new Move(p2Archer1Place, 4, 0)));
+        assertFalse((boolean) randomPlayer.invoke(player2, game, new Move(p2Archer1Place, 0, 4)));
     }
 }
