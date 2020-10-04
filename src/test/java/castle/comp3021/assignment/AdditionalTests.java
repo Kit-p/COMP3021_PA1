@@ -268,6 +268,27 @@ public class AdditionalTests {
     }
 
     /**
+     * Test MoveRecord functions
+     */
+    @Test
+    public void testMoveRecord() throws CloneNotSupportedException {
+        MockPlayer mockPlayer = new MockPlayer();
+        Move move = new Move(new Place(0, 0), new Place(0, 1));
+        MoveRecord moveRecord1 = new MoveRecord(mockPlayer, move);
+        MoveRecord moveRecord2 = moveRecord1.clone();
+        MoveRecord moveRecord3 = new MoveRecord(new MockPlayer(), new Move(new Place(1, 0), new Place(0, 0)));
+        assertEquals(mockPlayer, moveRecord1.getPlayer());
+        assertEquals(move, moveRecord1.getMove());
+        assertTrue(moveRecord1.equals(moveRecord1));
+        assertTrue(moveRecord1.equals(moveRecord2));
+        assertFalse(moveRecord1.equals(moveRecord3));
+        assertFalse(moveRecord1.equals(null));
+        assertFalse(moveRecord1.equals(mockPlayer));
+        assertEquals(moveRecord1.hashCode(), moveRecord2.hashCode());
+        assertEquals(moveRecord1.toString(), moveRecord2.toString());
+    }
+
+    /**
      * Test private validateMove() functions
      */
     @Test
@@ -318,6 +339,12 @@ public class AdditionalTests {
         assertFalse((boolean) consolePlayer.invoke(player1, game, null));
         assertFalse((boolean) randomPlayer.invoke(player2, null, null));
         assertFalse((boolean) randomPlayer.invoke(player2, game, null));
+
+        assertFalse((boolean) jesonMor.invoke(game, player1, p1Knight, new Move(new Place(0, 4), new Place(4, 0))));
+        assertFalse((boolean) knight.invoke(p1Knight, game, new Move(new Place(0, 4), new Place(4, 0))));
+        assertFalse((boolean) archer.invoke(p1Archer1, game, new Move(new Place(0, 4), new Place(4, 0))));
+        assertFalse((boolean) consolePlayer.invoke(player1, game, new Move(new Place(0, 4), new Place(4, 0))));
+        assertFalse((boolean) randomPlayer.invoke(player2, game, new Move(new Place(0, 4), new Place(4, 0))));
 
         Place[] invalidXPlaces = new Place[]{new Place(99, 0), new Place(-1, 0)};
         Place[] invalidYPlaces = new Place[]{new Place(0, 99), new Place(0, -1)};
@@ -412,6 +439,9 @@ public class AdditionalTests {
         assertFalse((boolean) consolePlayer.invoke(player1, game, new Move(p1KnightPlace, 1, 4)));
         assertTrue((boolean) consolePlayer.invoke(player1, game, new Move(p1Archer2Place, 3, 3)));
         assertFalse((boolean) consolePlayer.invoke(player1, game, new Move(p1Archer2Place, 0, 0)));
+        assertTrue((boolean) randomPlayer.invoke(player2, game, new Move(p2KnightPlace, 1, 3)));
+        assertTrue((boolean) randomPlayer.invoke(player2, game, new Move(p2Archer2Place, 3, 4)));
+        assertFalse((boolean) randomPlayer.invoke(player2, game, new Move(p2Archer2Place, 2, 1)));
 
         game.movePiece(new Move(p1Archer2Place, 3, 1));
         game.movePiece(new Move(new Place(3, 1), p1Archer2Place));
@@ -433,5 +463,16 @@ public class AdditionalTests {
         assertFalse((boolean) consolePlayer.invoke(player1, game, new Move(p1Archer1Place, p1KnightPlace)));
         assertTrue((boolean) randomPlayer.invoke(player2, game, new Move(p2KnightPlace, p1KnightPlace)));
         assertFalse((boolean) randomPlayer.invoke(player2, game, new Move(p2KnightPlace, p2Archer1Place)));
+        assertTrue((boolean) randomPlayer.invoke(player2, game, new Move(p2Archer2Place, p1KnightPlace)));
+        assertFalse((boolean) randomPlayer.invoke(player2, game, new Move(p2Archer2Place, p1Archer1Place)));
+        assertFalse((boolean) randomPlayer.invoke(player2, game, new Move(p2Archer2Place, p2Archer1Place)));
+    }
+
+    /**
+     * Test private validateMove() functions
+     */
+    @Test
+    public void testValidateMove3() {
+
     }
 }
