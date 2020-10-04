@@ -38,17 +38,22 @@ public class Knight extends Piece {
     @Override
     public Move[] getAvailableMoves(Game game, Place source) {
         // TODO student implementation
-        if (game == null || source == null || !this.equals(game.getPiece(source))) {
+        if (game == null || source == null) {
             return new Move[0];
         }
 
-        ArrayList<Move> allAvailableMoves = new ArrayList<>();
+        int size = game.getConfiguration().getSize();
         int sourceX = source.x();
         int sourceY = source.y();
+        if (sourceX < 0 || sourceY < 0 || sourceX >= size || sourceY >= size || !this.equals(game.getPiece(source))) {
+            return new Move[0];
+        }
+
         int shortEdge = 1;
         int longEdge = 2;
         int coefficientA = -1;
         int coefficientB = -1;
+        ArrayList<Move> allAvailableMoves = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
             int destinationX = sourceX + coefficientA * shortEdge;
             int destinationY = sourceY + coefficientB * longEdge;
