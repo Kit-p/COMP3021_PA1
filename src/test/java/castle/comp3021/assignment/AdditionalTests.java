@@ -12,6 +12,8 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
@@ -206,6 +208,28 @@ public class AdditionalTests {
         Configuration config = new Configuration(3, new Player[]{mockPlayer, new MockPlayer()});
         assertThrows(InvalidConfigurationError.class, () -> config.addInitialPiece(mockPiece,99, 0));
         assertThrows(InvalidConfigurationError.class, () -> config.addInitialPiece(mockPiece, 0, 99));
+    }
+
+    /**
+     * Test ConsolePlayer.nextMove() input validation
+     */
+    @Test
+    public void testNextMoveInputValidation() {
+        String data = "a1- >a2\r\nZ27 ->    Y36\r\na1->B3\r\na1->c2\r\n";
+        InputStream stdin = System.in;
+        try {
+            System.setIn(new ByteArrayInputStream(data.getBytes()));
+            ConsolePlayer consolePlayer = new ConsolePlayer("ConsolePlayer");
+            Knight knight = new Knight(consolePlayer);
+            Configuration config = new Configuration(3, new Player[]{consolePlayer, new MockPlayer()});
+            config.addInitialPiece(knight, 0, 0);
+            config.addInitialPiece(new MockPiece(consolePlayer), 0, 1);
+            JesonMor game = new JesonMor(config);
+            Move chosenMove = consolePlayer.nextMove(game, game.getAvailableMoves(consolePlayer));
+            assertEquals(new Move(new Place(0, 0), new Place(2, 1)), chosenMove);
+        } finally {
+            System.setIn(stdin);
+        }
     }
 
     /**
