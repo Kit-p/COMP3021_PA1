@@ -138,6 +138,10 @@ public class AdditionalTests {
         assertArrayEquals(emptyMoves, archerPiece.getAvailableMoves(null, null));
         assertArrayEquals(emptyMoves, archerPiece.getAvailableMoves(game, null));
         assertArrayEquals(emptyMoves, archerPiece.getAvailableMoves(game, new Place(1, 0)));
+        assertArrayEquals(emptyMoves, archerPiece.getAvailableMoves(game, new Place(-1, 0)));
+        assertArrayEquals(emptyMoves, archerPiece.getAvailableMoves(game, new Place(0, -1)));
+        assertArrayEquals(emptyMoves, archerPiece.getAvailableMoves(game, new Place(99, 0)));
+        assertArrayEquals(emptyMoves, archerPiece.getAvailableMoves(game, new Place(0, 99)));
     }
 
     /**
@@ -154,6 +158,10 @@ public class AdditionalTests {
         assertArrayEquals(emptyMoves, knightPiece.getAvailableMoves(null, null));
         assertArrayEquals(emptyMoves, knightPiece.getAvailableMoves(game, null));
         assertArrayEquals(emptyMoves, knightPiece.getAvailableMoves(game, new Place(1, 0)));
+        assertArrayEquals(emptyMoves, knightPiece.getAvailableMoves(game, new Place(-1, 0)));
+        assertArrayEquals(emptyMoves, knightPiece.getAvailableMoves(game, new Place(0, -1)));
+        assertArrayEquals(emptyMoves, knightPiece.getAvailableMoves(game, new Place(99, 0)));
+        assertArrayEquals(emptyMoves, knightPiece.getAvailableMoves(game, new Place(0, 99)));
     }
 
     /**
